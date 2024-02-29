@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const connectDB = require('./Dbconnection')
 const router = require('./route')
+require("dotenv").config()
 
 connectDB()
 
@@ -11,6 +12,7 @@ app.get("/",(req,res)=>{
     res.send("hello world")
 })
 
+app.use(express.json())// middleware to read in json format
 app.use('/',router)
 
 app.listen(port,()=>{
