@@ -1,15 +1,16 @@
-// registerSchema.js
+const mongoose = require('mongoose')
 
-const mongoose = require('mongoose');
+const register = mongoose.Schema({
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },   
+  email: { type: String, required: true},
+  password:{type: String, required: true}
+  })
 
-// Define the schema for user registration
-const userSchema = new mongoose.Schema({
-    firstname: String,
-    lastname: String,
-    email: String,
-    password: String
-});
+  const User = mongoose.model("User",register)
 
-// Create and export the Mongoose model
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+
+  module.exports = User
+
+
+  

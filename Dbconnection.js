@@ -23,24 +23,21 @@
 
 const mongoose = require('mongoose');
 
-
 function connectDB() {
-    console.log(process.env.CONNECT_URI)
-    try{
-        if(!process.env.CONNECT_URI){
-            console.log("Please provide a connection string")
+    try {
+        if (!process.env.CONNECT_URI) {
+            console.log("Please provide a connection string");
             process.exit(1);
         }
-        mongoose.connect(
-            process.env.CONNECT_URI
-        ).then(()=>console.log("Connected to database"))
-        .catch((error)=>{
-            console.log("Error occured while connecting to database :" + error)
-            process.exit(1);
-        })
-
-    }catch(err){
-        console.log("Error occured while connecting to database :" + err)
+        console.log("Attempting to connect to MongoDB Atlas...");
+        mongoose.connect(process.env.CONNECT_URI)
+            .then(() => console.log("Connected to database"))
+            .catch((error) => {
+                console.log("Error occurred while connecting to database: " + error);
+                process.exit(1);
+            });
+    } catch (err) {
+        console.log("Error occurred while connecting to database: " + err);
     }
 }
 

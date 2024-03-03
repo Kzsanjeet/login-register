@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const connectDB = require('./Dbconnection')
 const router = require('./route')
+const cors = require('cors')
 require("dotenv").config()
 
 connectDB()
@@ -13,8 +14,9 @@ app.get("/",(req,res)=>{
 })
 
 app.use(express.json())// middleware to read in json format
+app.use(cors({origin:true}))
 app.use('/',router)
 
 app.listen(port,()=>{
-    console.log(`Server is runnin on port ${port}`)
+    console.log(`Server is running on port ${port}`)
 })
