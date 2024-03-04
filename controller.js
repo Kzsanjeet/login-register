@@ -1,4 +1,5 @@
 const User = require('./registerSchema');
+const addBlog = require('./addBlogSchema')
 const bcrypt = require('bcrypt')
 
 const register = async (req, res) => {  
@@ -53,4 +54,39 @@ const loginUser = async (req, res) => {
     }
 }
 
-module.exports = {register,loginUser};
+//get all the blogs
+
+const allBlogs = async(req ,res)=>{
+    try{
+        const getBlogs = await addBlog.find({}).sort({createdAt:-1});
+        if(getBlogs){
+            res.status(200).json({"message":"success","blogs":getBlogs}); 
+        }else{
+            res.status(400).json({"message":"unsuccesful"});
+        }
+    }catch(err){
+        console.log("error",err)
+    }
+}
+
+const addB = async(req,res)=>{
+    try{
+        const {title,content} = req.body
+
+        const addBg = await addBlog.create({
+            title: title,
+            content: content
+        })
+
+        if(addBg){
+            res.status(200).json({"message":"Added Successfully"});
+        }else{
+            res.status(404).json({"error": "Failed to Add Blog"})
+        }
+    }catch(err){
+        console.log('error', err)
+    }
+
+}
+
+module.exports = {register,loginUser,addB,allBlogs};
