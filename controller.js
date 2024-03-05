@@ -69,11 +69,13 @@ const allBlogs = async(req ,res)=>{
     }
 }
 
+//for adding the blog
 const addB = async(req,res)=>{
     try{
-        const {title,content} = req.body
+        const {username,title,content} = req.body
 
         const addBg = await addBlog.create({
+            username: username, // left side key is for setting the name to store it in database , right side value is from user data.
             title: title,
             content: content
         })
@@ -89,4 +91,44 @@ const addB = async(req,res)=>{
 
 }
 
-module.exports = {register,loginUser,addB,allBlogs};
+const editBlog = async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const { title, content } = req.body;
+
+        // Assuming addBlog is your Mongoose model
+        const updatedBlog = await addBlog.findByIdAndUpdate(
+            blogId,
+            { title: title,
+                content: content
+            },
+            { 
+                new: true 
+            } // Return the updated document
+        );
+
+        if (!updatedBlog) {
+            return res.status(404).send("Blog not found");
+        }
+
+        res.status(200).json({"message":"Updated"});
+    } catch (err) {
+        res.status(400).send("Unable to update: " + err);
+    }
+};
+
+const deleteBlog = async()=>{
+    try{
+        const{blogId} = req.params.id
+    const delBlog = await  addBlog.deleteOne({_id : blogId})
+    if(delBlog){
+        res.status(200).json({"message":"delete success"})
+    }else{
+        res.status(400).json({"message":"No such Blog Found!"})
+    }
+    }catch(err){
+        res.status(500).json({"error":err})
+    }
+}
+
+module.exports = {register,loginUser,addB,allBlogs,editBlog,deleteBlog};
