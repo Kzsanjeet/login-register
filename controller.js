@@ -117,18 +117,19 @@ const editBlog = async (req, res) => {
     }
 };
 
-const deleteBlog = async()=>{
-    try{
-        const{blogId} = req.params.id
-    const delBlog = await  addBlog.deleteOne({_id : blogId})
-    if(delBlog){
-        res.status(200).json({"message":"delete success"})
-    }else{
-        res.status(400).json({"message":"No such Blog Found!"})
-    }
-    }catch(err){
-        res.status(500).json({"error":err})
+const deleteBlog = async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const delBlog = await addBlog.deleteOne({ _id: blogId });
+        if (delBlog.deletedCount > 0) {
+            res.status(200).json({ "message": "Delete success" });
+        } else {
+            res.status(400).json({ "message": "No such Blog Found!" });
+        }
+    } catch (err) {
+        res.status(500).json({ "error": err.message });
     }
 }
+
 
 module.exports = {register,loginUser,addB,allBlogs,editBlog,deleteBlog};
